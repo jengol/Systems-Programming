@@ -51,8 +51,10 @@ struct NodePtr{
 
 struct SortedList
 {
-    Node *front;
-
+    
+  Node front;
+  CompareFuncT cf;
+  DestructFuncT df; 
 };
 typedef struct SortedList* SortedListPtr;
 
@@ -121,7 +123,9 @@ int SLRemove(SortedListPtr list, void *newObj);
  */
 struct SortedListIterator
 {
-    Node* ptr;
+    SortedListPtr s;
+    Node ptr;
+
 };
 typedef struct SortedListIterator* SortedListIteratorPtr;
 
