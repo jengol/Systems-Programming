@@ -42,16 +42,16 @@ typedef void (*DestructFuncT)( void * );
  * Sorted list type that will hold all the data to be sorted.
  */
 
-struct Node{
-    int ncurrptrs;
-    void* data;
-    Node* next;
+typedef struct NodePtr* Node;
+struct NodePtr{
+    void *data;
+    Node *next;
 };
 
 
 struct SortedList
 {
-    Node* front;
+    Node *front;
 
 };
 typedef struct SortedList* SortedListPtr;
@@ -134,7 +134,7 @@ typedef struct SortedListIterator* SortedListIteratorPtr;
  *  construct a SortedListIterator, or if the SortedListPtr parameter 'list' is NULL.
  */
 
-SortedListIteratorPtr SLCreateIterator(SortedListPtr list);m
+SortedListIteratorPtr SLCreateIterator(SortedListPtr list);
 
 
 /*

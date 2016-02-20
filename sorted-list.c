@@ -1,8 +1,14 @@
-//Jamie will do SL functions 
+#include "sorted-list.h"
+//Jamie will do SL functions
+//Creates SLPtr struct w/ malloced space and setting struct fields to null. Return SLPtr created 
 SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
-  SortedListPtr SLptr = (SortedListPtr *)malloc(sizeof(SortedListPtr));
+  SortedListPtr s = (SortedListPtr *)malloc(sizeof(SortedListPtr));
+  Node tmp = (Node)malloc(sizeof(Node));
+  tmp->data = 0;
+  tmp->next = 0;
 
-
+  s->front = tmp;
+  return s;
 }
 
 void SLDestroy(SortedListPtr list){
