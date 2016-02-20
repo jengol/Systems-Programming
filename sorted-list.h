@@ -42,12 +42,12 @@ typedef void (*DestructFuncT)( void * );
  * Sorted list type that will hold all the data to be sorted.
  */
 
-typedef struct NodePtr* Node;
-struct NodePtr{
+//typedef struct Node* Node;
+struct Node{
     void *data;
-    Node *next;
+    struct Node *next;
 };
-
+typedef struct Node* Node;
 
 struct SortedList
 {

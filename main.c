@@ -32,22 +32,26 @@ int main(int argc, char **argv){
   //create the SortedListPtr struct + mallocs a struct
   SortedListPtr s = (SortedListPtr)(SLCreate(compare, destruct));
   SortedListIteratorPtr iter = SLCreateIterator(s);
-  int i = 0;
+  int i = 1;
   void *x;
-  printf("argc %d\n", argc); 
-  do{
+  printf("argc %d\n", argc);
+  //insert all in argv
+  for(; i < argc; i++){
     x = (void *)argv[i];
-    //tmp is data of each Node that iterator is pointing to
-    Node tmp = (Node)malloc(sizeof(Node));
-    if(!tmp)
-      return 0;
-    tmp->data = x; //sets the data of node to be equal to argv[i]
-    tmp->next = 0;
-    //printf("%d\n",*((int *)tmp->data));
-    printf("hello\n"); 
-
+    printf("\nCurrently added: %s\n", argv[i]); 
+    SLInsert(s, x);
+  }
+  Node tmp = s->front;
+  int *num;
+  i = 1;
+  do{
+    num = (int *)(tmp->data);
+    printf("Print: %d\n",*num);
+    tmp = tmp->next;
     i++;
-  }while(i < argc-1);
+  }while(i < argc);
+  //do{
+  //}while(i < argc-1);
 
 
   printf("Test");
