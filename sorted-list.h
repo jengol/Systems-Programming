@@ -50,8 +50,7 @@ struct Node{
 typedef struct Node* Node;
 
 struct SortedList
-{
-    
+{ 
   Node front;
   CompareFuncT cf;
   DestructFuncT df; 

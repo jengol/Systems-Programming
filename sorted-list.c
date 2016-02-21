@@ -6,20 +6,20 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
   SortedListPtr s = (SortedListPtr)malloc(sizeof(SortedListPtr));
   if(!s)
     return 0; 
-  
+  //creation of initial node and set all fields to null 
   Node tmp = (Node)malloc(sizeof(Node));
   tmp->data = 0;
   tmp->next = 0;
-
   s->cf = cf;
   s->df = df;
-
+  //setting front to the new node created
   s->front = tmp;
   return s;
 }
 
 void SLDestroy(SortedListPtr list){
-  
+  if(!list)
+    return;
   free(list);
   return;
 }
@@ -38,7 +38,7 @@ int SLInsert(SortedListPtr list, void *newObj){
     return 0;
 
   printf("apple\n"); 
-  //if there is front Node
+  //if there is data is front node, if not adds newobj
   if(!tmp->data){
     node->data = newObj;
     node->next = 0;
@@ -69,8 +69,64 @@ int SLInsert(SortedListPtr list, void *newObj){
 
 }
 
-int SlRemove(SortedListPtr list, void *newObj){
+int SLRemove(SortedListPtr list, void *newObj){
+  Node tmp;
+  tmp = list->front;
+  if(!list || !tmp)
+    return 0;
+
+  printf("green\n"); 
+  //checks if newobj == front of LL
+  if(list->cf(tmp->data, newObj) == 0){ 
+    //if only 1 node 
+    if(!tmp->next){
+      list->front = 0;
+      return 1; 
+    }
+    list->df(tmp->data);
+    list->front = tmp->next;
+    free(tmp);
+    return 1;
+  }
+
+  printf("yeller\n"); 
+  //loop through until found a match
+  do{
+    //if matches second node
+    if(list->cf(newObj, tmp->next->data) == 0){
+      printf("blueeee\n"); 
+      list->df(tmp->data);
+      free(tmp->next);
+      tmp->next = NULL;
+      return 1;;
+    }
+    tmp = tmp->next;
+    //return 0 if last node and still no match
+    if(!tmp->next)
+      return 0;
+  }while(list->cf(newObj, tmp->next->data) != 0);
+
   
+  printf("purple\n"); 
+  //if node.next == newobj, so DELETE node.next
+  if(list->cf(newObj, tmp->next->data) == 0){
+    //if DELETED node is second to last
+
+    printf("white\n"); 
+    if(tmp->next->next == NULL){
+      list->df(tmp->next->data);
+      free(tmp->next); 
+      tmp->next = NULL;
+      return 1;
+    }
+    //node is has at least 3 before and found a match 
+    tmp->next = tmp->next->next;
+    list->df(tmp->next->data);
+    free(tmp->next);
+    return 1;
+
+  }
+  return 0;
 }
 
 

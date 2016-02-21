@@ -35,12 +35,14 @@ int main(int argc, char **argv){
   int i = 1;
   void *x;
   printf("argc %d\n", argc);
-  //insert all in argv
+  //insert all in argv into LL. Sorts as items are inserted O(n^2)
   for(; i < argc; i++){
     x = (void *)argv[i];
     printf("\nCurrently added: %s\n", argv[i]); 
     SLInsert(s, x);
   }
+  
+  //prints out node data .. sorta. It prints out something else in memory, not exact int
   Node tmp = s->front;
   int *num;
   i = 1;
@@ -50,9 +52,19 @@ int main(int argc, char **argv){
     tmp = tmp->next;
     i++;
   }while(i < argc);
-  //do{
-  //}while(i < argc-1);
 
+  //removal of SL and all nodes
+  i = 1;
+  do{
+    SLRemove(s, (void *)argv[i]);
+    i++;
+    printf("\n"); 
+  }while(i < argc);
+  if(!s->front)
+    printf("YAY\n");
+  SLDestroy(s);
+  if(!s)
+    printf("SortedListPtr successfully deleted");
 
   printf("Test");
   return 0;
