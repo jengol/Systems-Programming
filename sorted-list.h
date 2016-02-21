@@ -1,3 +1,5 @@
+// John Eng and Jamie Liao
+
 #ifndef SORTED_LIST_H
 #define SORTED_LIST_H
 /*
@@ -5,6 +7,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 //======Prototypes for User-Defined Functions==========
 //-=-=-=-You do not need to do anything with these definitions-=-=-=-
@@ -49,6 +52,7 @@ struct Node{
 };
 typedef struct Node* Node;
 
+//cf and df stored into the struct to allow access to them between methods
 struct SortedList
 { 
   Node front;
@@ -122,8 +126,8 @@ int SLRemove(SortedListPtr list, void *newObj);
  */
 struct SortedListIterator
 {
-    SortedListPtr s;
-    Node ptr;
+    SortedListPtr slptr;
+    Node nptr;
 
 };
 typedef struct SortedListIterator* SortedListIteratorPtr;
