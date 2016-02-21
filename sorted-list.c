@@ -4,6 +4,7 @@
 
 
 //Jamie will do SL functions
+
 //Creates SLPtr struct w/ malloced space and setting struct fields to null. Return SLPtr created 
 SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
   SortedListPtr s = (SortedListPtr)malloc(sizeof(SortedListPtr));
@@ -20,39 +21,47 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
   return s;
 }
 
+
+
+
 void SLDestroy(SortedListPtr list){
-  if(!list)
+  //if list is null, return
+    if(list==0){
+    } else {
+        free(list);
+    }
     return;
-  free(list);
-  return;
 }
+
+
+
 
 int SLInsert(SortedListPtr list, void *newObj){
   Node tmp, node;
-  //if the list is null return 0
-  //Doesn't the list start at null?
-//  if (!list)
-//    return 0;
-  
+
+  if (list==0){
+      printf("Within SLInsert: Null List");
+      return 0;
+  }
+    
+    
+  //-------------------------------------------------------------------------------------------
+    
+    
   tmp = list->front;
-  printf("obj: %d\n", *((int *)newObj));
+    
+  printf("Item inserted: %d\n", *((int*)newObj));
   //Dynamically allocated Node
   node = (Node)malloc(sizeof(Node));
-  printf("oranges\n"); 
-  //check if malloc worked
-  if(!node)
-    return 0;
-
-  printf("apple\n"); 
-  //if there is data isn't front node, if not adds newobj
-  if(!tmp->data){
-    node->data = newObj;
-  //Redundant
-//    node->next = 0;
-//    list->front = node;
+    
+ 
+  //if there is no data in front node, initialize it
+  if(tmp->data == 0){
+    tmp->data = newObj;
     return 1;
   }
-  printf("kumquat\n"); 
+    
+    
   //if newObj > front, put newObj as new front node
   if(list->cf(tmp->data, newObj) <= 0){
     node->next = list->front; 
@@ -61,17 +70,24 @@ int SLInsert(SortedListPtr list, void *newObj){
     return 1;
   }
 
-  //Not quite sure that's how it works
-  //I would loop the whole LL in a while loop
     
     
-  printf("watermelon\n"); 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
   //while the next node's data exists and newObj's data > node.next
   while(tmp->next && list->cf(tmp->next->data, newObj) == 1){
     tmp = tmp->next;
   }
 
-  printf("bananannaa\n"); 
+
   //insert into appropriate position once newObjs's data < node.next's data
   node->next = tmp->next;
   node->data = newObj;
@@ -79,6 +95,15 @@ int SLInsert(SortedListPtr list, void *newObj){
   return 1;
 
 }
+
+
+
+
+
+
+
+
+
 
 //Haven't looked at this yet
 
@@ -88,7 +113,7 @@ int SLRemove(SortedListPtr list, void *newObj){
   if(!list || !tmp)
     return 0;
 
-  printf("green\n"); 
+ 
   //checks if newobj == front of LL
   if(list->cf(tmp->data, newObj) == 0){ 
     //if only 1 node 
@@ -102,12 +127,12 @@ int SLRemove(SortedListPtr list, void *newObj){
     return 1;
   }
 
-  printf("yeller\n"); 
+
   //loop through until found a match
   do{
     //if matches second node
     if(list->cf(newObj, tmp->next->data) == 0){
-      printf("blueeee\n"); 
+
       list->df(tmp->data);
       free(tmp->next);
       tmp->next = 0;
@@ -120,12 +145,12 @@ int SLRemove(SortedListPtr list, void *newObj){
   }while(list->cf(newObj, tmp->next->data) != 0);
 
   
-  printf("purple\n"); 
+
   //if node.next == newobj, so DELETE node.next
   if(list->cf(newObj, tmp->next->data) == 0){
     //if DELETED node is second to last
 
-    printf("white\n"); 
+
     if(tmp->next->next == 0){
       list->df(tmp->next->data);
       free(tmp->next); 
