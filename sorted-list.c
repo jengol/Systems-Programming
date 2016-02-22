@@ -37,7 +37,7 @@ void SLDestroy(SortedListPtr list){
 
 
 int SLInsert(SortedListPtr list, void *newObj){
-  Node tmp, node;
+  Node ptr, prev, node;
 
   if (list==0){
       printf("Within SLInsert: Null List");
@@ -48,124 +48,88 @@ int SLInsert(SortedListPtr list, void *newObj){
   //-------------------------------------------------------------------------------------------
     
     
-  tmp = list->front;
+  ptr = list->front;
     
   printf("Item inserted: %d\n", *((int*)newObj));
-  //Dynamically allocated Node
-  node = (Node)malloc(sizeof(Node));
     
  
   //if there is no data in front node, initialize it
-  if(tmp->data == 0){
-    tmp->data = newObj;
+  if(ptr->data == 0){
+    ptr->data = newObj;
     return 1;
   }
     
     
   //if newObj > front, put newObj as new front node
-  if(list->cf(tmp->data, newObj) <= 0){
-    node->next = list->front; 
+  if(list->cf(ptr->data, newObj) <= 0){
+    node = (Node)malloc(sizeof(Node));
     node->data = newObj;
+    node->next = list->front;
     list->front = node;
     return 1;
   }
-
+    
+    //Loops through the LL to insert
+    //Uses trailing pointer
+    while (ptr!=0) {
+        
+        if (list->cf(newObj,ptr->data)==1) { //If the newObj is greater than next node
+            node = (Node)malloc(sizeof(Node));
+            node->data = newObj;
+            prev->next = node;
+            node->next= ptr;
+            return 1;
+        } else if (list->cf(newObj,ptr->data)==0){ //If newObj already in list
+            return 0;
+        } else {                                   //newObj is smaller
+            prev = ptr;
+            ptr = ptr->next;
+        }
+    }
+    
+    //At the last Node and newObj < temp
+    node = (Node)malloc(sizeof(Node));
+    node->data = newObj;
+    node->next = 0;
+    prev->next = node;
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-  //while the next node's data exists and newObj's data > node.next
-  while(tmp->next && list->cf(tmp->next->data, newObj) == 1){
-    tmp = tmp->next;
-  }
-
-
-  //insert into appropriate position once newObjs's data < node.next's data
-  node->next = tmp->next;
-  node->data = newObj;
-  tmp->next = node;
-  return 1;
-
+    return 1;
 }
 
-
-
-
-
-
-
-
-
-
-//Haven't looked at this yet
 
 int SLRemove(SortedListPtr list, void *newObj){
-  Node tmp;
-  tmp = list->front;
-  if(!list || !tmp)
+    
+  //Error conditions
+  Node ptr, prev;
+  ptr = list->front;
+  if(list==0 || ptr==0)
     return 0;
-
- 
-  //checks if newobj == front of LL
-  if(list->cf(tmp->data, newObj) == 0){ 
-    //if only 1 node 
-    if(!tmp->next){
-      list->front = 0;
-      return 1; 
-    }
-    list->df(tmp->data);
-    list->front = tmp->next;
-    free(tmp);
-    return 1;
-  }
-
-
-  //loop through until found a match
-  do{
-    //if matches second node
-    if(list->cf(newObj, tmp->next->data) == 0){
-
-      list->df(tmp->data);
-      free(tmp->next);
-      tmp->next = 0;
-      return 1;;
-    }
-    tmp = tmp->next;
-    //return 0 if last node and still no match
-    if(!tmp->next)
-      return 0;
-  }while(list->cf(newObj, tmp->next->data) != 0);
-
-  
-
-  //if node.next == newobj, so DELETE node.next
-  if(list->cf(newObj, tmp->next->data) == 0){
-    //if DELETED node is second to last
-
-
-    if(tmp->next->next == 0){
-      list->df(tmp->next->data);
-      free(tmp->next); 
-      tmp->next = 0;
+    
+ //-----------------------------------------------------------------------------------
+    
+  //checks if newObj == front of LL
+  if(list->cf(ptr->data, newObj) == 0){
+      list->front = list->front->next;
       return 1;
-    }
-    //node is has at least 3 before and found a match 
-    tmp->next = tmp->next->next;
-    list->df(tmp->next->data);
-    free(tmp->next);
-    return 1;
-
   }
+  
+  //loop through until found a match
+    while(ptr!=0){
+      if(list->cf(newObj, ptr->data) == 0){
+          prev = ptr->next;
+          return 1;
+      }
+      prev = ptr;
+      ptr = ptr->next;
+  }
+
   return 0;
 }
+
+
+
+
 
 
 
@@ -192,11 +156,19 @@ void SLDestroyIterator(SortedListIteratorPtr iter){
 }
 
 void *SLNextItem(SortedListIteratorPtr iter){
-    //method not complete
-    if(iter->nptr->next == 0){
+    //If pointing to the front
+    if(iter->nptr == iter->slptr->front){
+        iter->nptr = iter->nptr->next;
+        return iter->slptr->front->data;
+    }
+    //If null
+    if(iter->nptr== 0){
         return 0;
     }
-    return 0;
+    
+    void * ret = iter->nptr->data;
+    iter->nptr = iter->nptr->next;
+    return ret;
 }
 
 void *SLGetItem(SortedListIteratorPtr iter){

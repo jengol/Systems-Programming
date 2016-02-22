@@ -9,8 +9,10 @@ int compare(void *x, void *y){
     return (xInt == yInt) ? 0 : ((xInt>yInt) ? 1 : -1);
 }
 
+
+//Not too sure about this
 void destruct(void *x){
-    (void) x;
+    free(x);
 }
 
 
@@ -34,7 +36,7 @@ int main(int argc, char **argv){
     
     //This is used for testing -- will need to be revised later
     //Array of integers
-    int arr[argc-1];
+    int * arr = (int*)malloc((argc-1)*sizeof(int));
     int index;
     for (index = 0; index < argc-1; index++) {
         arr[index] = atoi(argv[index+1]);
@@ -46,7 +48,7 @@ int main(int argc, char **argv){
     for(i=1; i < argc; i++){
         //Converts string into integer
         x = arr+i-1;
-        printf("\nCurrently added: %d\n", n);
+        printf("\nCurrently added: %d\n", *((int*)x));
         SLInsert(s, x);
     }
 
@@ -70,36 +72,35 @@ int main(int argc, char **argv){
     // John's Code
     
     
-//    SortedListIteratorPtr iter = SLCreateIterator(s);
-//    
-//    void* ptr;
-//    while (1) {
-//        ptr = SLGetItem(iter);
-//        if (ptr == 0) {
-//            break;
-//        } else {
-//            printf("%d\n",*((int*)ptr));
-//        }
-//    }
+    SortedListIteratorPtr iter = SLCreateIterator(s);
+    
+    void* item;
+    while (1) {
+        item = SLGetItem(iter);
+        if (item == 0) {
+            break;
+        } else {
+            printf("Iterator: %d\n",*((int*)item));
+        }
+    }
     
     //-------------------------------------------------------------------------------------------
     
     
     
-    //Jamie's Code
-    //removal of SL and all nodes
-//    i = 1;
-//    do{
-//        SLRemove(s, (void *)argv[i]);
-//        i++;
-//        printf("\n");
-//    }while(i < argc);
-//    if(!s->front)
-//        printf("YAY\n");
+
+    //removing all SLNodes
+    i = 0;
+    do{
+        SLRemove(s, (void *)(arr+i));
+        i++;
+    }while(i < argc-1);
+    
+    
+//    if(s->front==0)
+//        printf("Deleted\n");
 //    SLDestroy(s);
-//    if(!s)
+//    if(s==0)
 //        printf("SortedListPtr successfully deleted");
-//    
-//    printf("Test");
     return 0;
 }
