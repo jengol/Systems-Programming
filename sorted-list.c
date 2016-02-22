@@ -22,18 +22,21 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
 }
 
 
-
-
 void SLDestroy(SortedListPtr list){
   //if list is null, return
     if(list==0){
     } else {
+        Node ptr = list->front;
+        Node prev = 0;
+        while (ptr!=0) {
+            prev = ptr;
+            ptr = ptr->next;
+            free(prev);
+        }
         free(list);
     }
     return;
 }
-
-
 
 
 int SLInsert(SortedListPtr list, void *newObj){
@@ -129,12 +132,6 @@ int SLRemove(SortedListPtr list, void *newObj){
 
 
 
-
-
-
-
-
-
 //John's Code
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list){
     //Error condition
@@ -175,7 +172,6 @@ void *SLGetItem(SortedListIteratorPtr iter){
     if(iter->nptr == 0){
         return 0;
     }
-    
     void* ret = iter->nptr->data;
     iter->nptr = iter->nptr->next;  //updates the node pointer within the sorted list
     return ret;

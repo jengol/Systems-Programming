@@ -187,7 +187,7 @@ void * SLNextItem(SortedListIteratorPtr iter);
  *         to try to read and return an item off the end of the list.
  */
 
-void * SLGetItem( SortedListIteratorPtr iter );
+void * SLGetItem(SortedListIteratorPtr iter);
 
 
 

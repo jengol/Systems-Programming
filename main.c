@@ -76,7 +76,7 @@ int main(int argc, char **argv){
     
     void* item;
     while (1) {
-        item = SLGetItem(iter);
+        item = SLNextItem(iter);
         if (item == 0) {
             break;
         } else {
@@ -84,11 +84,12 @@ int main(int argc, char **argv){
         }
     }
     
+    //Free interator
+    SLDestroyIterator(iter);
+    
     //-------------------------------------------------------------------------------------------
     
     
-    
-
     //removing all SLNodes
     i = 0;
     do{
@@ -96,11 +97,8 @@ int main(int argc, char **argv){
         i++;
     }while(i < argc-1);
     
+    SLDestroy(s);
+    printf("SortedListPtr successfully deleted");
     
-//    if(s->front==0)
-//        printf("Deleted\n");
-//    SLDestroy(s);
-//    if(s==0)
-//        printf("SortedListPtr successfully deleted");
     return 0;
 }
