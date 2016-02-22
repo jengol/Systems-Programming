@@ -1,4 +1,6 @@
 // John Eng and Jamie Liao
+// Asst 1: Sorted List
+// Systems Programming, Spring 2016
 #include <stdio.h>
 #include "sorted-list.h"
 
@@ -23,9 +25,6 @@ int main(int argc, char **argv){
     
     //-------------------------------------------------------------------------------------------
     
-    
-    
-    
     //create the SortedListPtr struct + mallocs a struct
     SortedListPtr s = (SortedListPtr)(SLCreate(compare, destruct));
 
@@ -43,33 +42,15 @@ int main(int argc, char **argv){
     }
     
     
-    printf("argc %d\n", argc);
+//    printf("argc %d\n", argc);
     //insert all in argv into LL. Sorts as items are inserted O(n) in each pass
     for(i=1; i < argc; i++){
         //Converts string into integer
         x = arr+i-1;
-        printf("\nCurrently added: %d\n", *((int*)x));
+//        printf("\nCurrently added: %d\n", *((int*)x));
         SLInsert(s, x);
     }
-
-    
-    
-    printf("\n\n");
-    //This prints out the data in the list
-    Node tmp = s->front;
-    int num;
-    i = 1;
-    do{
-        num = *((int *)(tmp->data));
-        printf("Print: %d\n",num);
-        tmp = tmp->next;
-        i++;
-    }while(i < argc);
-    
-    
-    
     //-------------------------------------------------------------------------------------------
-    // John's Code
     
     
     SortedListIteratorPtr iter = SLCreateIterator(s);
@@ -87,9 +68,6 @@ int main(int argc, char **argv){
     //Free interator
     SLDestroyIterator(iter);
     
-    //-------------------------------------------------------------------------------------------
-    
-    
     //removing all SLNodes
     i = 0;
     do{
@@ -100,7 +78,7 @@ int main(int argc, char **argv){
     SLDestroy(s);
     //Free the array that was dynamically allocated before
     free(arr);
-    printf("SortedListPtr successfully deleted\n");
+//    printf("SortedListPtr successfully deleted\n");
     
     return 0;
 }

@@ -44,7 +44,7 @@ int SLInsert(SortedListPtr list, void *newObj){
   Node ptr, prev, node;
 
   if (list==0){
-      printf("Within SLInsert: Null List");
+//      printf("Within SLInsert: Null List");
       return 0;
   }
     
@@ -54,7 +54,7 @@ int SLInsert(SortedListPtr list, void *newObj){
     
   ptr = list->front;
     
-  printf("Item inserted: %d\n", *((int*)newObj));
+//  printf("Item inserted: %d\n", *((int*)newObj));
     
  
   //if there is no data in front node, initialize it
