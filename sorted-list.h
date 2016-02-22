@@ -128,6 +128,7 @@ struct SortedListIterator
 {
     SortedListPtr slptr;
     Node nptr;
+//    int changes;
 
 };
 typedef struct SortedListIterator* SortedListIteratorPtr;
