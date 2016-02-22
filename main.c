@@ -98,7 +98,9 @@ int main(int argc, char **argv){
     }while(i < argc-1);
     
     SLDestroy(s);
-    printf("SortedListPtr successfully deleted");
+    //Free the array that was dynamically allocated before
+    free(arr);
+    printf("SortedListPtr successfully deleted\n");
     
     return 0;
 }

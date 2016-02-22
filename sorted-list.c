@@ -152,7 +152,17 @@ void SLDestroyIterator(SortedListIteratorPtr iter){
   return;
 }
 
+/*
+    If an item were inserted or deleted, there would not be a change in the iterator
+    because the iterator points to the same list.
+ 
+ 
+ 
+ */
+
+
 void *SLNextItem(SortedListIteratorPtr iter){
+    
     //If pointing to the front
     if(iter->nptr == iter->slptr->front){
         iter->nptr = iter->nptr->next;
