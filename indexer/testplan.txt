@@ -1,0 +1,57 @@
+#John Eng (je283) and Marielle Jurist (mlj85)
+
+———————————————————————————————
+Test #1:
+Empty File:/ilab/users/mlj85/Desktop/folder1/folder2/folder3/empty.txt
+
+Expected Output:
+//Nothing
+
+Actual Output:
+//Nothing
+———————————————————————————————
+Test #2:
+Empty Directory:/ilab/users/mlj85/Desktop/folder1/folder2/folder4
+
+Expected Output:
+//Nothing
+
+Actual Output:
+//Nothing
+———————————————————————————————
+Test #3:
+Single File that tests every type of token: /ilab/users/mlj85/Desktop/folder1/folder2/folder3/alltokens.txt
+
+Expected Output:
+//Nothing
+
+Actual Output:
+//Nothing
+———————————————————————————————
+Test #4:
+Single Directory with single file: /ilab/users/mlj85/Desktop/folder1/folder2/folder3/folder5
+
+Expected Output:
+//Nothing
+
+Actual Output:
+//Nothing
+———————————————————————————————
+Test #5:
+Single Directory with multiple files: /ilab/users/mlj85/Desktop/folder1/folder2/folder3
+
+Expected Output:
+//Nothing
+
+Actual Output:
+//Nothing
+---------------------------------------
+Test #6:
+directory with multiple files and nested directories: /ilab/users/mlj85/Desktop/folder1
+
+Expected Output:
+//Nothing
+
+Actual Output:
+//Nothing
+
