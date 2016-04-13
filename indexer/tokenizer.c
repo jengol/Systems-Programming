@@ -8,7 +8,7 @@
 Tokenizer *TKCreate(char * input,int len) {
 	Tokenizer *ourTokenizer=(Tokenizer*)malloc(sizeof(Tokenizer));
 	ourTokenizer->token = input;
-	ourTokenizer->tokenLength = len-1;
+	ourTokenizer->tokenLength = len;
 	ourTokenizer->index = 0;
 	return ourTokenizer;
 }

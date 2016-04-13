@@ -94,57 +94,52 @@ void destroyFreq(void* data){
 void readFile(char* filename,SortedListPtr list){
 	FILE* fp;
 	fp = fopen(filename, "r");
-	//If the file Pointer is NULL, then return NULL
+	//If the file Pointer is invalid, print and error
 	if(fp == NULL){
+		perror(filename);
 		return;
 	}
 
 	char * line = NULL;
 	size_t len = 0;
-	//CAN ssize_t be size_t instead?
+	//CAN ssize_t be size_t instead? I'm pretty sure it can
 	ssize_t read;
 	char* output = NULL;
 	Tokenizer *ourTokenizer= NULL;
 
-
+	//read stores the length of the line in the file
 	while ((read = getline(&line, &len, fp)) != -1) {
-
-		ourTokenizer = TKCreate(line,len);
-		if (ourTokenizer == 0) {
-			printf("Error: Malloc failed to create TokenizerT");
+		//read instead of line
+		ourTokenizer = TKCreate(line,read-1);
+		if (ourTokenizer == NULL) {
+			printf("Error: Failed to Tokenize");
 			return;
 		}
-		//while the char within ourTokenizer is not the null terminator
-		//continue to output char*
-		while (ourTokenizer->token[ourTokenizer->index] != '\0') {
+		//Output will be NULL when it has reached the end of the line
+		while (1) {
 			output = TKGetNextToken(ourTokenizer);
-			//THIS SHOULD BE THE MAX LENGTH OF A LINE
-			//			char *output = (char*)malloc(sizeof(char)*50);
-			//			strcpy(output,TKGetNextToken(ourTokenizer));
-			//Null check
 			if(output){
 				SLInsert(list,output,1);
-				//printf("%s\n",output);
+			} else {
+				break;
 			}
-
 		}
 		//add fileData to file linked lists
 		insertFileData(list,filename,0);
-		//reset each wordCount to 0
+		//reset the wordCount of each node in SL
 		resetList(list);
 		TKDestroy(ourTokenizer);
-		line = NULL;
+//		line = NULL;
 	}
-
 	fclose(fp);
 
-	/*Print the SortedListPtr
+//	Print the SortedListPtr
 	node tmp = list->head;
-	int i = 0;
 	while(tmp != NULL){
-		printf("%s\n",tmp->data);
+		printf("%s\n",(char*)(tmp->data));
 		tmp = tmp->next;
-	}*/
+	}
+
 	return;
 
 }
@@ -177,7 +172,7 @@ void indexProcess(char* path, SortedListPtr list){
 				strcat(next,ent->d_name);
 				printf("Within a directory:\t%s\n",next);
 				//MAJOR INSTRUCTIONS
-//				readFile(next,list);
+				readFile(next,list);
 			}
 		}
 		closedir(dir);
@@ -192,8 +187,8 @@ void indexProcess(char* path, SortedListPtr list){
 		} else {
 			//close file. It was will be reopened in readFile function
 			fclose(fp);
-			printf("filename:\t%s",path);
-//			readFile(path,list);
+			printf("filename:\t%s\n",path);
+			readFile(path,list);
 		}
 	} 
 	return;
@@ -212,13 +207,14 @@ int main(int argc, char **argv) {
 
 	//Hard Code
 
-	char* path = "/ilab/users/je283/Desktop/testFolder/test1";
+	char* path = "/ilab/users/je283/Desktop/testFolder";
+	char* outputFile = "/ilab/users/je283/Desktop";
 	//List will contain all of the data describing the tokens and fileData struct
 		SortedListPtr list = SLCreate(compare,destroyFreq);
 	//Process the path into the list
 		indexProcess(path,list);
 	//Print the list into the output file
-	//	printList(list,outputFile);
+//		printList(list,outputFile);
 
 	return 0;
 }
