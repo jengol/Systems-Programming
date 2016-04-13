@@ -9,19 +9,16 @@ O_SRCS += \
 C_SRCS += \
 ../indexer.c \
 ../sorted-list.c \
-../tester.c \
 ../tokenizer.c 
 
 OBJS += \
 ./indexer.o \
 ./sorted-list.o \
-./tester.o \
 ./tokenizer.o 
 
 C_DEPS += \
 ./indexer.d \
 ./sorted-list.d \
-./tester.d \
 ./tokenizer.d 
 
 

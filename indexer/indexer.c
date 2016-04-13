@@ -150,15 +150,16 @@ void readFile(char* filename,SortedListPtr list){
 }
 
 /*
- * indexProcess will list all the files within every directory recursively.
- * Then, it will call the function readFile to process the data
+ * indexProcess will recursively find all the files in the directory.
+ * Then, it will call the function readFile to process the data.
  */
 void indexProcess(char* path, SortedListPtr list){
 
 	DIR* dir;
 	struct dirent *ent;
 
-	if ( (dir=opendir(path)) != NULL) {
+	//If the directory is valid
+	if ( (dir=opendir(path)) ) {
 		while((ent = readdir(dir)) != NULL){
 			if(ent->d_type == DT_DIR &&
 					strcmp(ent->d_name, ".") != 0 &&
@@ -174,24 +175,34 @@ void indexProcess(char* path, SortedListPtr list){
 				strcpy(next,path);
 				strcat(next,"/");
 				strcat(next,ent->d_name);
-				//printf("%s\n",next);
+				printf("Within a directory:\t%s\n",next);
 				//MAJOR INSTRUCTIONS
-				readFile(next,list);
+//				readFile(next,list);
 			}
 		}
 		closedir(dir);
-	} else {
-		//If directory name is invalid, print an error.
-		perror(path);
-		readFile(path,list);
+	} else { //The directory is invalid
+		//Check if it is a file
+		FILE* fp;
+		fp = fopen(path, "r");
+		//If the file does not exist, print an error and return
+		if(fp == NULL){
+			perror(path);
+			return;
+		} else {
+			//close file. It was will be reopened in readFile function
+			fclose(fp);
+			printf("filename:\t%s",path);
+//			readFile(path,list);
+		}
 	} 
-
+	return;
 }
 
 int main(int argc, char **argv) {
-	char* line = "this @is a string\0 test";
-	Tokenizer *ourTokenizer= TKCreate(line,24);
-	char* output = NULL;
+//	char* line = "this @is a string\0 test";
+//	Tokenizer *ourTokenizer= TKCreate(line,24);
+//	char* output = NULL;
 
 	//Name of output file
 //	char* outputFile = argv[1];
@@ -199,11 +210,13 @@ int main(int argc, char **argv) {
 //	char* path = argv[2];
 
 
+	//Hard Code
 
+	char* path = "/ilab/users/je283/Desktop/testFolder/test1";
 	//List will contain all of the data describing the tokens and fileData struct
-	//	SortedListPtr list = SLCreate(compare,destroyFreq);
+		SortedListPtr list = SLCreate(compare,destroyFreq);
 	//Process the path into the list
-	//	indexProcess(path,list);
+		indexProcess(path,list);
 	//Print the list into the output file
 	//	printList(list,outputFile);
 

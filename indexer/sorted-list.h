@@ -83,18 +83,6 @@ void SLDestroy(SortedListPtr list);
 
 int SLInsert(SortedListPtr list, void *newObj,int choice);
 
-
-/*
- * SLRemove should remove 'newObj' from the SortedList in a manner that
- *   maintains list order.
- *
- * SLRemove must not modify the data item pointed to by 'newObj'.
- *
- * SLRemove should return 1 on success, and 0 on failure.
- */
-
-int SLRemove(SortedListPtr list, void *newObj);
-
 void insertFileData(SortedListPtr list,char* filename,int choice);
 
 void resetList(SortedListPtr list);
