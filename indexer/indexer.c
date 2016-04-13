@@ -2,26 +2,33 @@
 #include "indexer.h"
 
 void printList(SortedListPtr list,char* outputFile){
-
 	FILE* fp = fopen(outputFile,"w");
-	printf("hi");
-	fprintf(fp,"%s","{ list: [\n");
+
+	if(fp == NULL){
+		perror(outputFile);
+		return;
+	}
+	fprintf(fp,"%s","{ \"list\": [\n");
 
 	node temp = list->head;
 	node filetemp;
 	fileData x;
 
-	while(temp != NULL){
-		fprintf(fp,"\t{ %s : [\n", (char*)(temp->data));
+	while(1){
+		fprintf(fp,"\t{ \"%s\" : [\n", (char*)(temp->data));
 		filetemp = temp->fileList->head;
 		while(filetemp!=NULL){
 			x = (fileData)(filetemp->data);
-			if(x->frequency != 0){
-				fprintf(fp,"\t\t{ %s : %d}\n",x->filename, x->frequency);
-			}
+			//			if(x->frequency != 0){
+			fprintf(fp,"\t\t{ \"%s\" : %d}\n",x->filename, x->frequency);
+			//			}
 			filetemp = filetemp->next;
 		}
-		fprintf(fp,"\t]}\n");
+		if(temp->next == NULL){
+			fprintf(fp,"\t]}\n");
+			break;
+		}
+		fprintf(fp,"\t]},\n");
 		temp = temp->next;
 	}
 
@@ -129,16 +136,16 @@ void readFile(char* filename,SortedListPtr list){
 		//reset the wordCount of each node in SL
 		resetList(list);
 		TKDestroy(ourTokenizer);
-//		line = NULL;
+		//		line = NULL;
 	}
 	fclose(fp);
 
-//	Print the SortedListPtr
-	node tmp = list->head;
-	while(tmp != NULL){
-		printf("%s\n",(char*)(tmp->data));
-		tmp = tmp->next;
-	}
+	//	Print the SortedListPtr
+	//	node tmp = list->head;
+	//	while(tmp != NULL){
+	//		printf("%s\n",(char*)(tmp->data));
+	//		tmp = tmp->next;
+	//	}
 
 	return;
 
@@ -170,7 +177,7 @@ void indexProcess(char* path, SortedListPtr list){
 				strcpy(next,path);
 				strcat(next,"/");
 				strcat(next,ent->d_name);
-				printf("Within a directory:\t%s\n",next);
+				//				printf("Within a directory:\t%s\n",next);
 				//MAJOR INSTRUCTIONS
 				readFile(next,list);
 			}
@@ -187,7 +194,7 @@ void indexProcess(char* path, SortedListPtr list){
 		} else {
 			//close file. It was will be reopened in readFile function
 			fclose(fp);
-			printf("filename:\t%s\n",path);
+			//			printf("filename:\t%s\n",path);
 			readFile(path,list);
 		}
 	} 
@@ -195,26 +202,26 @@ void indexProcess(char* path, SortedListPtr list){
 }
 
 int main(int argc, char **argv) {
-//	char* line = "this @is a string\0 test";
-//	Tokenizer *ourTokenizer= TKCreate(line,24);
-//	char* output = NULL;
+	//	char* line = "this @is a string\0 test";
+	//	Tokenizer *ourTokenizer= TKCreate(line,24);
+	//	char* output = NULL;
 
 	//Name of output file
-//	char* outputFile = argv[1];
+	//	char* outputFile = argv[1];
 	//Name of the directory or file to index
-//	char* path = argv[2];
+	//	char* path = argv[2];
 
 
 	//Hard Code
 
 	char* path = "/ilab/users/je283/Desktop/testFolder";
-	char* outputFile = "/ilab/users/je283/Desktop";
+	char* outputFile = "/ilab/users/je283/Desktop/output.txt";
 	//List will contain all of the data describing the tokens and fileData struct
-		SortedListPtr list = SLCreate(compare,destroyFreq);
+	SortedListPtr list = SLCreate(compare,destroyFreq);
 	//Process the path into the list
-		indexProcess(path,list);
+	indexProcess(path,list);
 	//Print the list into the output file
-//		printList(list,outputFile);
+	printList(list,outputFile);
 
 	return 0;
 }
