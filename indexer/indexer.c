@@ -101,6 +101,7 @@ void readFile(char* filename,SortedListPtr list){
 
 	char * line = NULL;
 	size_t len = 0;
+	//CAN ssize_t be size_t instead?
 	ssize_t read;
 	char* output = NULL;
 	Tokenizer *ourTokenizer= NULL;
@@ -108,11 +109,13 @@ void readFile(char* filename,SortedListPtr list){
 
 	while ((read = getline(&line, &len, fp)) != -1) {
 
-		ourTokenizer = TKCreate(line);
+		ourTokenizer = TKCreate(line,len);
 		if (ourTokenizer == 0) {
 			printf("Error: Malloc failed to create TokenizerT");
 			return;
 		}
+		//while the char within ourTokenizer is not the null terminator
+		//continue to output char*
 		while (ourTokenizer->token[ourTokenizer->index] != '\0') {
 			output = TKGetNextToken(ourTokenizer);
 			//THIS SHOULD BE THE MAX LENGTH OF A LINE
@@ -186,18 +189,24 @@ void indexProcess(char* path, SortedListPtr list){
 }
 
 int main(int argc, char **argv) {
+	char* line = "this @is a string\0 test";
+	Tokenizer *ourTokenizer= TKCreate(line,24);
+	char* output = NULL;
 
 	//Name of output file
-	char* outputFile = argv[1];
+//	char* outputFile = argv[1];
 	//Name of the directory or file to index
-	char* path = argv[2];
+//	char* path = argv[2];
+
+
 
 	//List will contain all of the data describing the tokens and fileData struct
-	SortedListPtr list = SLCreate(compare,destroyFreq);
+	//	SortedListPtr list = SLCreate(compare,destroyFreq);
 	//Process the path into the list
-	indexProcess(path,list);
+	//	indexProcess(path,list);
 	//Print the list into the output file
-	printList(list,outputFile);
+	//	printList(list,outputFile);
+
 	return 0;
 }
 

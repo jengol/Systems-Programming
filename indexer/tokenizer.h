@@ -7,12 +7,13 @@
 #include <stdlib.h>
 
 struct Tokenizer_ {
-	int index;
 	char* token;
+	int tokenLength;
+	int index;
 };
 typedef struct Tokenizer_ Tokenizer;
 
-Tokenizer *TKCreate(char * input);
+Tokenizer *TKCreate(char * input,int len);
 
 void TKDestroy(Tokenizer * tk);
 
