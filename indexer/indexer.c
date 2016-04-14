@@ -109,15 +109,14 @@ void readFile(char* filename,SortedListPtr list){
 
 	char * line = NULL;
 	size_t len = 0;
-	//CAN ssize_t be size_t instead? I'm pretty sure it can
-	ssize_t read;
+	size_t lineLength = 0;
 	char* output = NULL;
 	Tokenizer *ourTokenizer= NULL;
 
 	//read stores the length of the line in the file
-	while ((read = getline(&line, &len, fp)) != -1) {
+	while ((lineLength = getline(&line, &len, fp)) != -1) {
 		//read instead of line
-		ourTokenizer = TKCreate(line,read-1);
+		ourTokenizer = TKCreate(line,lineLength-1);
 		if (ourTokenizer == NULL) {
 			printf("Error: Failed to Tokenize");
 			return;

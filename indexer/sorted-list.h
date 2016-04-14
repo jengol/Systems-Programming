@@ -81,7 +81,7 @@ void SLDestroy(SortedListPtr list);
  * Data item equality should be tested with the user's comparator function *
  */
 
-int SLInsert(SortedListPtr list, void *newObj,int choice);
+void SLInsert(SortedListPtr list, void *newObj,int choice);
 
 void insertFileData(SortedListPtr list,char* filename,int choice);
 

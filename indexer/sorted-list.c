@@ -16,40 +16,35 @@ node SLCreateNode(void *data,SortedListPtr list){
 	node newNode = (node)malloc(sizeof(node));
 	newNode->data = data;
 	newNode->next = NULL;
-	newNode->wordcount = 0;
+	newNode->wordcount = 1;
 	newNode->fileList = SLCreate(list->cmp,list->dfreq);
 	return newNode;
 }
 
-int SLInsert(SortedListPtr list,void *newObj,int choice){
+void SLInsert(SortedListPtr list,void *newObj,int choice){
 
-	//tested
+//	node front = list->head;
+
+
+	//If the list is not initialized
 	if (list->head == NULL){
 		node newNode = SLCreateNode(newObj,list);
-		newNode->wordcount++;
 		list->head = newNode;
-		return 1;
+		return;
 	}
-	//tested
+	//If the newObj comes before the head node
 	if (list->cmp(list->head->data, newObj,choice) == -1){
 		node newNode = SLCreateNode(newObj,list);
-		newNode->wordcount++;
 		newNode->next = list->head;
 		list->head = newNode;
-		return 1;
+		return;
 	}
-	//tested
+	//If the list only has one node and the newObj comes after head node
 	if((list->cmp(list->head->data, newObj,choice) == 1) && list->head->next == NULL){
 		node newNode = SLCreateNode(newObj,list);
-		newNode->wordcount++;
 		newNode->next = list->head->next;
 		list->head->next = newNode;
-		return 1;
-	}
-	//tested
-	if(list->cmp(list->head->data, newObj,choice) == 0){
-		list->head->wordcount++;
-		return 0;
+		return;
 	}
 
 	node temp = list->head;
@@ -58,21 +53,20 @@ int SLInsert(SortedListPtr list,void *newObj,int choice){
 		if(list->cmp(temp->next->data, newObj,choice)!= 0){
 			if(list->cmp(temp->next->data, newObj,choice) == -1){
 				node newNode = SLCreateNode(newObj,list);
-				newNode->wordcount++;
 				newNode->next = temp->next;
 				temp->next = newNode;
-				return 1;
+				return;
 			}
 			temp = temp->next;
 		}
-		else{return 0;}
+		else{
+			return;
+		}
 	}
 
 	node newNode = SLCreateNode(newObj,list);
-	newNode->wordcount++;
 	temp->next = newNode;
-	return 1;	
-
+	return;
 }
 
 
