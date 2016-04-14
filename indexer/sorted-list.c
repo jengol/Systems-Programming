@@ -24,48 +24,38 @@ node SLCreateNode(void *data,SortedListPtr list){
 void SLInsert(SortedListPtr list,void *newObj,int choice){
 
 //	node front = list->head;
+	CompareFuncT cmp = list->cmp;
+	node ptr = list->head;
+	//Compare value returned from the compare function
+	int compVal;
 
-
+	node newNode = SLCreateNode(newObj,list);
 	//If the list is not initialized
-	if (list->head == NULL){
-		node newNode = SLCreateNode(newObj,list);
-		list->head = newNode;
+	if (ptr == NULL){
+		ptr = newNode;
 		return;
 	}
 	//If the newObj comes before the head node
-	if (list->cmp(list->head->data, newObj,choice) == -1){
-		node newNode = SLCreateNode(newObj,list);
-		newNode->next = list->head;
-		list->head = newNode;
-		return;
-	}
-	//If the list only has one node and the newObj comes after head node
-	if((list->cmp(list->head->data, newObj,choice) == 1) && list->head->next == NULL){
-		node newNode = SLCreateNode(newObj,list);
-		newNode->next = list->head->next;
-		list->head->next = newNode;
+	if (cmp(ptr->data, newObj,choice) == -1){
+		newNode->next = ptr;
+		ptr = newNode;
 		return;
 	}
 
-	node temp = list->head;
+	node prev = NULL;
 
-	while(temp->next != NULL){
-		if(list->cmp(temp->next->data, newObj,choice)!= 0){
-			if(list->cmp(temp->next->data, newObj,choice) == -1){
-				node newNode = SLCreateNode(newObj,list);
-				newNode->next = temp->next;
-				temp->next = newNode;
-				return;
-			}
-			temp = temp->next;
-		}
-		else{
-			return;
+	while(ptr!= NULL){
+		compVal = cmp(ptr->next->data, newObj,choice);
+		if(compVal == 1){
+			prev->next = newNode;
+			newNode->next = ptr;
+		} else if (compVal == 0) {
+
 		}
 	}
 
-	node newNode = SLCreateNode(newObj,list);
-	temp->next = newNode;
+
+	ptr->next = newNode;
 	return;
 }
 

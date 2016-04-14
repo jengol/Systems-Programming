@@ -19,9 +19,7 @@ void printList(SortedListPtr list,char* outputFile){
 		filetemp = temp->fileList->head;
 		while(filetemp!=NULL){
 			x = (fileData)(filetemp->data);
-			//			if(x->frequency != 0){
 			fprintf(fp,"\t\t{ \"%s\" : %d}\n",x->filename, x->frequency);
-			//			}
 			filetemp = filetemp->next;
 		}
 		if(temp->next == NULL){
@@ -87,7 +85,6 @@ int compare(void* one, void* two, int choice){
 		}
 
 	}
-
 	//This line should not be reached
 	return 0;
 }
