@@ -128,21 +128,21 @@ void readFile(char* filename,SortedListPtr list){
 			}
 		}
 		//add fileData to file linked lists
-		insertFileData(list,filename,0);
+//		insertFileData(list,filename,0);
 		//reset the wordCount of each node in SL
-		resetList(list);
+//		resetList(list);
 		TKDestroy(ourTokenizer);
 		//		line = NULL;
 	}
 	fclose(fp);
 
-	//	Print the SortedListPtr
-	//	node tmp = list->head;
-	//	while(tmp != NULL){
-	//		printf("%s\n",(char*)(tmp->data));
-	//		tmp = tmp->next;
-	//	}
-
+//		Print the SortedListPtr
+		node tmp = list->head;
+		while(tmp != NULL){
+			printf("%s\n",(char*)(tmp->data));
+			tmp = tmp->next;
+		}
+		printf("----------------------\n");
 	return;
 
 }
@@ -198,14 +198,11 @@ void indexProcess(char* path, SortedListPtr list){
 }
 
 int main(int argc, char **argv) {
-	//	char* line = "this @is a string\0 test";
-	//	Tokenizer *ourTokenizer= TKCreate(line,24);
-	//	char* output = NULL;
 
 	//Name of output file
-	//	char* outputFile = argv[1];
+//		char* outputFile = argv[1];
 	//Name of the directory or file to index
-	//	char* path = argv[2];
+//		char* path = argv[2];
 
 
 	//Hard Code
@@ -217,7 +214,7 @@ int main(int argc, char **argv) {
 	//Process the path into the list
 	indexProcess(path,list);
 	//Print the list into the output file
-	printList(list,outputFile);
+//	printList(list,outputFile);
 
 	return 0;
 }

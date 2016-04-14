@@ -1,7 +1,7 @@
 all: main
 
 run: main
-	./index /ilab/users/je283/Desktop/output.txt /ilab/users/je283/Desktop/testFolder
+	./index
 	
 main: indexer.o token.o sorted-list.o
 	cc -Wall indexer.o token.o sorted-list.o -o index  
