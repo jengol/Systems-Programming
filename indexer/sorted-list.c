@@ -23,43 +23,51 @@ node SLCreateNode(void *data,SortedListPtr list){
 
 void SLInsert(SortedListPtr list,void *newObj,int choice){
 
-//	node front = list->head;
+	//Basic error check
+	if(list == NULL){
+		return;
+	}
+
 	CompareFuncT cmp = list->cmp;
 	node ptr = list->head;
-	//Compare value returned from the compare function
-	int compVal;
 
+	//Assume a new node will be created
+	//If not used, it means that newObj already exists
+	//newNode will be freed
 	node newNode = SLCreateNode(newObj,list);
+
 	//If the list is not initialized
 	if (ptr == NULL){
 		ptr = newNode;
 		return;
 	}
-	//If the newObj comes before the head node
-	if (cmp(ptr->data, newObj,choice) == -1){
-		newNode->next = ptr;
-		ptr = newNode;
-		return;
-	}
 
+	//Compare value returned from the compare function
+	int compVal;
+
+	//prev is used to keep a pointer to the last node if ptr reaches NULL
 	node prev = NULL;
-
-	while(ptr!= NULL){
+	do {
 		compVal = cmp(ptr->next->data, newObj,choice);
-		if(compVal == 1){
-			prev->next = newNode;
+		if(compVal == -1){
 			newNode->next = ptr;
+			ptr = newNode;
+			return;
 		} else if (compVal == 0) {
-
+			ptr->wordcount++;
+			//If the data already exists free the node that was created already
+			free(newNode);
+			return;
+		} else { //compVal == 1: the data comes after
+			prev = ptr;
+			ptr = ptr->next;
 		}
-	}
+	} while (ptr!= NULL);
 
-
-	ptr->next = newNode;
+	//prev will be pointing to the last node
+	prev->next = newNode;
 	return;
 }
-
-
 
 void insertFileData(SortedListPtr list,char* filename,int choice){
 	node temp = list->head;
