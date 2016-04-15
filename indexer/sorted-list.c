@@ -56,11 +56,6 @@ void SLInsert(SortedListPtr list,void *newObj,int choice){
 		return;
 	}
 
-
-
-
-
-
 	//Compare value returned from the compare function
 	int compVal;
 

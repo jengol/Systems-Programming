@@ -74,14 +74,14 @@ int compare(void* one, void* two, int choice){
 		return -1;
 	} else if(choice == 0) {
 
-		int a = *(int*)one;
-		int b = *(int*)two;
+		int a = ((fileData)one)->frequency;
+		int b = ((fileData)two)->frequency;
 
 		if(a<b || a==b){
-			return 1;
+			return -1;
 		}
 		else{
-			return -1;
+			return 1;
 		}
 
 	}
