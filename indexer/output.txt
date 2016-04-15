@@ -1,65 +1,65 @@
 { "list": [
 	{ "a" : [
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]},
 	{ "abs" : [
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]},
 	{ "asdfghjkl" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 1}
+		{ "/folder2/folder3/alltokens.txt" : 1}
 	]},
 	{ "bird" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 3}
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
+		{ "/folder2/folder3/alltokens.txt" : 3}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]},
 	{ "bird7" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 2}
+		{ "/folder2/folder3/alltokens.txt" : 2}
 	]},
 	{ "blah" : [
-		{ "folder1/hey.txt" : 2}
-		{ "folder1/hi.txt" : 1}
+		{ "/hey.txt" : 2}
+		{ "/hi.txt" : 1}
 	]},
 	{ "c" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 3}
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
+		{ "/folder2/folder3/alltokens.txt" : 3}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]},
 	{ "cat" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 3}
-		{ "folder1/hey.txt" : 2}
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
-		{ "folder1/hi.txt" : 1}
+		{ "/folder2/folder3/alltokens.txt" : 3}
+		{ "/hey.txt" : 2}
+		{ "/hi.txt" : 1}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]},
 	{ "cs" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 1}
+		{ "/folder2/folder3/alltokens.txt" : 1}
 	]},
 	{ "cs214" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 1}
+		{ "/folder2/folder3/alltokens.txt" : 1}
 	]},
 	{ "dog" : [
-		{ "folder1/folder2/yay.txt" : 2}
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
-		{ "folder1/hey.txt" : 1}
-		{ "folder1/hi.txt" : 1}
+		{ "/folder2/yay.txt" : 2}
+		{ "/hi.txt" : 1}
+		{ "/hey.txt" : 1}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]},
 	{ "dog84" : [
-		{ "folder1/folder2/yay.txt" : 1}
+		{ "/folder2/yay.txt" : 1}
 	]},
 	{ "doggy" : [
-		{ "folder1/folder2/yay.txt" : 1}
+		{ "/folder2/yay.txt" : 1}
 	]},
 	{ "lol" : [
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]},
 	{ "no" : [
-		{ "folder1/hi.txt" : 1}
+		{ "/hi.txt" : 1}
 	]},
 	{ "omg" : [
-		{ "folder1/folder2/folder4/yay.txt~" : 1}
+		{ "/folder2/folder4/yay.txt~" : 1}
 	]},
 	{ "s" : [
-		{ "folder1/folder2/folder3/alltokens.txt" : 1}
+		{ "/folder2/folder3/alltokens.txt" : 1}
 	]},
 	{ "someting" : [
-		{ "folder1/folder2/folder3/folder5/hello.txt" : 1}
+		{ "/folder2/folder3/folder5/hello.txt" : 1}
 	]}
 ]}

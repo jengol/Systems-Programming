@@ -1,7 +1,4 @@
 all: main
-
-run: main
-	./index
 	
 main: indexer.o tokenizer.o sorted-list.o
 	cc -Wall indexer.o tokenizer.o sorted-list.o -o index  

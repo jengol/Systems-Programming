@@ -1,24 +1,16 @@
 
 #include "indexer.h"
-char* relativepath(char* dir, char* file){
-	if (dir == NULL){
-		return file;
-	}
-	else{
-		int i=0;
-		while(dir[i]==file[0]){
-			i++;
-		}
-		return getSubString(file, i, strlen(file));
-	}
-}
 
-void printList(SortedListPtr list,char* outputFile){
+void printList(SortedListPtr list,char* outputFile,char*path){
 	FILE* fp = fopen(outputFile,"w");
 
 	if(fp == NULL){
 		perror(outputFile);
 		return;
+	}
+
+	if(list->head == NULL){
+		fprintf(fp,"%s","");
 	}
 	fprintf(fp,"%s","{ \"list\": [\n");
 
@@ -26,12 +18,15 @@ void printList(SortedListPtr list,char* outputFile){
 	node filetemp;
 	fileData x;
 
+
+	int pathlength = strlen(path);
+
 	while(1){
 		fprintf(fp,"\t{ \"%s\" : [\n", (char*)(temp->data));
 		filetemp = temp->fileList->head;
 		while(filetemp!=NULL){
 			x = (fileData)(filetemp->data);
-			fprintf(fp,"\t\t{ \"%s\" : %d}\n",x->filename, x->frequency);
+			fprintf(fp,"\t\t{ \"%s\" : %d}\n",((x->filename)+pathlength), x->frequency);
 			filetemp = filetemp->next;
 		}
 		if(temp->next == NULL){
@@ -149,17 +144,20 @@ void readFile(char* filename,SortedListPtr list){
 //		TKDestroy(ourTokenizer);
 		//		line = NULL;
 	}
+	if(list->head == NULL){
+		return;
+	}
 	insertFileData(list,filename,0);
 	resetList(list);
 	fclose(fp);
 
 //		Print the SortedListPtr
-		node tmp = list->head;
-		while(tmp != NULL){
-			printf("%s\n",(char*)(tmp->data));
-			tmp = tmp->next;
-		}
-		printf("----------------------\n");
+//		node tmp = list->head;
+//		while(tmp != NULL){
+//			printf("%s\n",(char*)(tmp->data));
+//			tmp = tmp->next;
+//		}
+//		printf("----------------------\n");
 	return;
 
 }
@@ -173,30 +171,26 @@ void indexProcess(char* path, SortedListPtr list){
 	DIR* dir;
 	struct dirent *ent;
 
-	char* next;
-
 	//If the directory is valid
 	if ( (dir=opendir(path)) ) {
 		while((ent = readdir(dir)) != NULL){
 			if(ent->d_type == DT_DIR &&
 					strcmp(ent->d_name, ".") != 0 &&
 					strcmp(ent->d_name, "..") != 0){
-				next = malloc(strlen(path)+strlen(ent->d_name)+2);
+				char* next = malloc(strlen(path)+strlen(ent->d_name)+2);
 				strcpy(next,path);
 				strcat(next,"/");
 				strcat(next,ent->d_name);
 				indexProcess(next,list);
-				free(next);
 			} else if (ent->d_type == DT_REG &&
 					strcmp(ent->d_name, ".DS_Store") != 0) {
-				next = malloc(strlen(path)+strlen(ent->d_name)+2);
+				char* next = malloc(strlen(path)+strlen(ent->d_name)+2);
 				strcpy(next,path);
 				strcat(next,"/");
 				strcat(next,ent->d_name);
 				//				printf("Within a directory:\t%s\n",next);
 				//MAJOR INSTRUCTIONS
 				readFile(next,list);
-				free(next);
 			}
 		}
 		closedir(dir);
@@ -220,19 +214,13 @@ void indexProcess(char* path, SortedListPtr list){
 
 int main(int argc, char **argv) {
 
-	//Name of output file
-//		char* outputFile = argv[1];
-	//Name of the directory or file to index
-//		char* path = argv[2];
+	char* outputFile = argv[1];
+	char* path = argv[2];
 
-
-	//Hard Code
-
-	char* path = "folder1";
-	char* outputFile = "output.txt";
-
-//	char* path = "/ilab/users/je283/Desktop/folder1";
-//	char* outputFile = "/ilab/users/je283/Desktop/output.txt";
+	if(strcmp(outputFile,path)==0){
+		printf("Output file will not be overwritten. Program exiting...\n");
+		return 0;
+	}
 
 
 	//List will contain all of the data describing the tokens and fileData struct
@@ -240,10 +228,9 @@ int main(int argc, char **argv) {
 	//Process the path into the list
 	indexProcess(path,list);
 	//Print the list into the output file
-	printList(list,outputFile);
+	printList(list,outputFile,path);
 
 	return 0;
 }
-
 
 
