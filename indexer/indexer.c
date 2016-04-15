@@ -128,12 +128,15 @@ void readFile(char* filename,SortedListPtr list){
 			}
 		}
 		//add fileData to file linked lists
-//		insertFileData(list,filename,0);
+
+
 		//reset the wordCount of each node in SL
-//		resetList(list);
-		TKDestroy(ourTokenizer);
+
+//		TKDestroy(ourTokenizer);
 		//		line = NULL;
 	}
+	insertFileData(list,filename,0);
+	resetList(list);
 	fclose(fp);
 
 //		Print the SortedListPtr
@@ -207,14 +210,14 @@ int main(int argc, char **argv) {
 
 	//Hard Code
 
-	char* path = "/ilab/users/je283/Desktop/testFolder";
+	char* path = "/ilab/users/je283/Desktop/folder1";
 	char* outputFile = "/ilab/users/je283/Desktop/output.txt";
 	//List will contain all of the data describing the tokens and fileData struct
 	SortedListPtr list = SLCreate(compare,destroyFreq);
 	//Process the path into the list
 	indexProcess(path,list);
 	//Print the list into the output file
-//	printList(list,outputFile);
+	printList(list,outputFile);
 
 	return 0;
 }

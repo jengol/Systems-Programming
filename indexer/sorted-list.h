@@ -5,6 +5,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 //======Prototypes for User-Defined Functions==========
 //-=-=-=-You do not need to do anything with these definitions-=-=-=-
@@ -45,7 +46,7 @@ struct Node{
 
 //SLCreateNode creates a node to be inserted into the list
 
-node SLCreateNode(void *data,SortedListPtr list);
+node SLCreateNode(void *data,SortedListPtr list,int objSize);
 
 
 /*

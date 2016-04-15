@@ -12,9 +12,25 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFreq dfreq){
 }
 
 //creates node using node struct, sets next pointer to null and points to data passed into function
-node SLCreateNode(void *data,SortedListPtr list){
+node SLCreateNode(void *data,SortedListPtr list,int choice){
 	node newNode = (node)malloc(sizeof(node));
-	newNode->data = data;
+
+
+	void* temp;
+	//the data is a char*
+	if(choice == 1){
+		temp = malloc(sizeof(char*)*(strlen((char*)data)+1));
+		strcpy((char*)temp,(char*)data);
+	} else if(choice == 0){// the data is a struct fileData
+		temp = malloc(sizeof(struct fileData));
+
+		((fileData)temp)->filename = malloc(sizeof(char*)*(strlen(((fileData)data)->filename)+1));
+		strcpy(((fileData)temp)->filename,((fileData)data)->filename);
+		((fileData)temp)->frequency = ((fileData)data)->frequency;
+
+	}
+
+	newNode->data = temp;
 	newNode->next = NULL;
 	newNode->wordcount = 1;
 	newNode->fileList = NULL;
@@ -28,7 +44,6 @@ void SLInsert(SortedListPtr list,void *newObj,int choice){
 		return;
 	}
 
-
 	//Assume a new node will be created
 	//If not used, it means that newObj already exists
 	//newNode will be freed
@@ -36,10 +51,15 @@ void SLInsert(SortedListPtr list,void *newObj,int choice){
 	node newNode;
 	//If the list is not initialized
 	if (list->head == NULL){
-		newNode = SLCreateNode(newObj,list);
+		newNode = SLCreateNode(newObj,list,choice);
 		list->head = newNode;
 		return;
 	}
+
+
+
+
+
 
 	//Compare value returned from the compare function
 	int compVal;
@@ -50,7 +70,12 @@ void SLInsert(SortedListPtr list,void *newObj,int choice){
 	do {
 		compVal = list->cmp(ptr->data, newObj,choice);
 		if(compVal == -1){
-			newNode = SLCreateNode(newObj,list);
+			newNode = SLCreateNode(newObj,list,choice);
+			if(ptr == list->head){
+				newNode->next = list->head;
+				list->head = newNode;
+				return;
+			}
 			newNode->next = ptr;
 			prev->next = newNode;
 			return;
@@ -65,20 +90,39 @@ void SLInsert(SortedListPtr list,void *newObj,int choice){
 	} while (ptr!= NULL);
 
 	//prev will be pointing to the last node
-	newNode = SLCreateNode(newObj,list);
+	newNode = SLCreateNode(newObj,list,choice);
 	prev->next = newNode;
 	return;
 }
 
 void insertFileData(SortedListPtr list,char* filename,int choice){
-	node temp = list->head;
 
+	if(list == NULL){
+		printf("List is NULL");
+		return;
+	}
+
+
+	node temp = list->head;
+	fileData newObj;
 	while(temp !=NULL){
-		//add new file node
-		fileData newObj = (fileData)malloc(sizeof(newObj));
+
+		if (temp->wordcount == 0) {
+			temp = temp->next;
+			continue;
+		}
+
+		//initialize
+		if (temp->fileList == NULL) {
+			temp->fileList = SLCreate(list->cmp,list->dfreq);
+		}
+
+		newObj = (fileData)malloc(sizeof(struct fileData));
+
 		newObj-> filename = filename;
 		newObj-> frequency = temp->wordcount;
 		SLInsert(temp->fileList,newObj,0);
+
 		temp = temp->next;
 	}
 	return;

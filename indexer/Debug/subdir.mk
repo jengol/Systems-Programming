@@ -4,6 +4,8 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 O_SRCS += \
+../indexer.o \
+../sorted-list.o \
 ../tokenizer.o 
 
 C_SRCS += \
