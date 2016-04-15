@@ -132,6 +132,8 @@ void readFile(char* filename,SortedListPtr list){
 
 		//reset the wordCount of each node in SL
 
+//		ourTokenizer->token = NULL;
+//		output = NULL;
 //		TKDestroy(ourTokenizer);
 		//		line = NULL;
 	}
@@ -210,6 +212,7 @@ int main(int argc, char **argv) {
 
 	//Hard Code
 
+//	char* path = "./folder1";
 	char* path = "/ilab/users/je283/Desktop/folder1";
 	char* outputFile = "/ilab/users/je283/Desktop/output.txt";
 	//List will contain all of the data describing the tokens and fileData struct
