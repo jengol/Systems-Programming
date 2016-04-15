@@ -1,5 +1,17 @@
 
 #include "indexer.h"
+char* relativepath(char* dir, char* file){
+	if (dir == NULL){
+		return file;
+	}
+	else{
+		int i=0;
+		while(dir[i]==file[0]){
+			i++;
+		}
+		return getSubString(file, i, strlen(file));
+	}
+}
 
 void printList(SortedListPtr list,char* outputFile){
 	FILE* fp = fopen(outputFile,"w");
@@ -161,26 +173,30 @@ void indexProcess(char* path, SortedListPtr list){
 	DIR* dir;
 	struct dirent *ent;
 
+	char* next;
+
 	//If the directory is valid
 	if ( (dir=opendir(path)) ) {
 		while((ent = readdir(dir)) != NULL){
 			if(ent->d_type == DT_DIR &&
 					strcmp(ent->d_name, ".") != 0 &&
 					strcmp(ent->d_name, "..") != 0){
-				char* next = malloc(strlen(path)+strlen(ent->d_name)+2);
+				next = malloc(strlen(path)+strlen(ent->d_name)+2);
 				strcpy(next,path);
 				strcat(next,"/");
 				strcat(next,ent->d_name);
 				indexProcess(next,list);
+				free(next);
 			} else if (ent->d_type == DT_REG &&
 					strcmp(ent->d_name, ".DS_Store") != 0) {
-				char* next = malloc(strlen(path)+strlen(ent->d_name)+2);
+				next = malloc(strlen(path)+strlen(ent->d_name)+2);
 				strcpy(next,path);
 				strcat(next,"/");
 				strcat(next,ent->d_name);
 				//				printf("Within a directory:\t%s\n",next);
 				//MAJOR INSTRUCTIONS
 				readFile(next,list);
+				free(next);
 			}
 		}
 		closedir(dir);
@@ -212,9 +228,13 @@ int main(int argc, char **argv) {
 
 	//Hard Code
 
-//	char* path = "./folder1";
-	char* path = "/ilab/users/je283/Desktop/folder1";
-	char* outputFile = "/ilab/users/je283/Desktop/output.txt";
+	char* path = "folder1";
+	char* outputFile = "output.txt";
+
+//	char* path = "/ilab/users/je283/Desktop/folder1";
+//	char* outputFile = "/ilab/users/je283/Desktop/output.txt";
+
+
 	//List will contain all of the data describing the tokens and fileData struct
 	SortedListPtr list = SLCreate(compare,destroyFreq);
 	//Process the path into the list
