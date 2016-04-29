@@ -1,2 +1,0 @@
-cat dog bird ./someting
-7747abs 77 %lol *$a \0'c

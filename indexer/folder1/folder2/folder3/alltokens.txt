@@ -1,5 +1,0 @@
-cat bird ....7 bird7
-cs.214 : cs214
-asdfghjkl
-c.s.
-cat cat bird bird bird7 c c
