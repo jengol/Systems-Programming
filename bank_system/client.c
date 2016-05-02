@@ -61,21 +61,23 @@ int main(int argc, char *argv[])
 
 	while(1){
 
-		printf("Please enter a command: (Case sensitive letter)\n");
-		printf("Open account (o)\n");
-		printf("Start account (s)\n");
-		printf("Credit (c)\n");
-		printf("Debit (d)\n");
-		printf("Balance (b)\n");
-		printf("End (e)\n");
-		printf("Quit (q)\n");
+		printf("Please enter a command:\n");
+		printf("Open account\n");
+		printf("Start account\n");
+		printf("Credit\n");
+		printf("Debit\n");
+		printf("Balance\n");
+		printf("End\n");
+		printf("Quit\n");
+
+
 
 		//Read in choice
-		choice = getchar();
-		write(socketfd,choice,1);
+		choice* = gets();
+		write(socketfd,choice,strlen());
 
 		switch(choice){
-		case 'o':
+		case 'O':
 			if(inSession){
 				printf("Already in session.");
 				continue;
@@ -125,7 +127,6 @@ int main(int argc, char *argv[])
 			exitStatus = 1;
 			break;
 
-		default:
 		}
 		bzero(buffer,100);
 		read(socketfd,buffer,100);
