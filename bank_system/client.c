@@ -69,12 +69,12 @@ int main(int argc, char *argv[])
 		printf("Balance\n");
 		printf("End\n");
 		printf("Quit\n");
+		printf("Note: account name up to 100 characters long\n");
 
 
 
 		//Read in choice
-		choice* = gets();
-		write(socketfd,choice,strlen());
+		write(socketfd,buffer,strlen(buffer));
 
 		switch(choice){
 		case 'O':

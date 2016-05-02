@@ -41,75 +41,180 @@ void printStatus(struct Account* shm){
  * 3. Prints account information every 20 seconds.
  */
 
-//void doprocessing (int sock) {
-//	int n;
-//	char buffer[256];
-//	while(1){
-//		bzero(buffer,256);
-//		n = read(sock,buffer,255);
-//
-//
-//		if (n < 0) {
-//			perror("ERROR reading from socket");
-//			exit(1);
-//		}
-//
-//		int i;
-//		char * temp;
-//
-//		switch(buffer){
-//		case 'o':
-//			for(i = 0; i<20; i++){
-//				if((accounts+i).name==NULL){
-//					continue;
-//				} else {
-//					temp = "Enter name of account\n";
-//					n =	write(sock,temp,strlen(temp));
-//				}
-//
-//			}
-//			if(){
-//				printf("Account already in session. To open a new account, end (e) your current session\n");
-//				continue;
-//			}
-//			printf("Enter new account name\n");
-//			while(fgets(buffer)==NULL){
-//				bzero(buffer);
-//				printf("Error inputting name, try again\n");
-//				/* no break */
-//			}
-//			break;
-//		case 's':
-//			break;
-//		case 'c':
-//			printf("Enter amount to credit/deposit:\n");
-//			fgets(buffer);
-//			break;
-//		case 'd':
-//			printf("Enter amount to debit/withdraw:\n");
-//			break;
-//		case 'b':
-//			break;
-//		case 'e':
-//			//exit out of child process
-//			break;
-//		default:
-//			//Invalid input
-//		}
-//
-//	}
-//
-//
-//
-//	printf("Here is the message: %s\n",buffer);
-//	printf("%d\n",getpid());
-//	n = write(sock,"I got your message",18);
-//
-//	if (n < 0) {
-//		perror("ERROR writing to socket");
-//		exit(1);
-//	}
-//}
+void doprocessing (int sock) {
+	//for reading from client
+	int n;
+	char buffer[110];
+	//flags for status checks
+	int exitStatus = 0;
+	int inSession = 0;
+	//index f0r loops
+	int i;
+	//place holder for index after account is started
+	int index;
+	//write message back to client
+	char * message;
+	// token stores command and account name when called again in open and start cases
+	char* token
+
+
+
+	//start while loop and read from client
+	while(1){
+		bzero(buffer,110);
+		n = read(sock,buffer,110);
+
+
+		if (n < 0) {
+			perror("ERROR reading from socket");
+			exit(1);
+		}
+
+		token = strtok(buffer," ");
+
+		switch(token){
+		case "Open":
+			//check if in session
+			if(inSession){
+				message = "Account already in session. To open a new account, end your current session\n";
+				write(sock,message, strlen(message));
+				continue;
+			}
+			token = strtok(buffer," ");
+
+			//check if account name was entered
+			if (token == NULL){
+				message = "Must enter account name.";
+				write(sock,message, strlen(message));
+				continue;
+			}
+
+			int space = 20;
+
+			for(i = 0; i<20; i++){
+				//make sure this is right with shared memory:
+
+				//check to see if account already exists
+				if(strcmp((accounts+i).name, token) == 0){
+					message = "Account already exists.\n";
+					write(sock,message, strlen(message));
+					continue;
+				//check for space
+				if((accounts+i).name == NULL){
+					space --;
+				}
+			}
+			//if no more space print message and continue
+			if(space == 0){
+				message = "No more space for account.\n";
+				write(sock,message, strlen(message));
+				continue;
+			}
+
+			//need check for lock on account (access from other users)
+
+			//open account in bank array here
+
+			message = "Account opened successfully.\n";
+			write(sock,message, strlen(message));
+			break;
+
+		case "Start":
+			if(inSession){
+				message = "Account already in session. To start a new account, end your current session\n";
+				write(sock,message, strlen(message));
+				continue;
+			}
+			token = strtok(buffer," ");
+
+			//check if account name was entered
+			if (token == NULL){
+				message = "Must enter account name.\n";
+				write(sock,message, strlen(message));
+				continue;
+			}
+			for(i = 0; i<20; i++){
+				//make sure this is right with shared memory:
+
+				//search for account name
+				if(strcmp((accounts+i).name, token) == 0){
+					//open account and store index
+					inSession = 1;
+					index = i;
+					message = "Account started successfully.\n";
+					write(sock,message, strlen(message));
+					continue;
+				}
+			}
+			break;
+
+		case "Credit":
+			if (!inSession){
+				message = "Must start an account first\n";
+				write(sock,message, strlen(message));
+				continue;
+			}
+			//get amount
+			token = strtok(buffer, " ");
+
+			//make sure memory access is right
+			bank[index].credit = bank[index].credit + atof(token);
+			message = "Transaction successful.\n";
+			write(sock,message, strlen(message));
+			break;
+
+		case "Debit":
+			if (!inSession){
+				message = "Must start an account first\n";
+				write(sock,message, strlen(message));
+				continue;
+			}
+			//get amount
+			token = strtok(buffer, " ");
+
+			//make sure memory access is right
+			bank[index].debit = bank[index].debit + atof(token);
+			message = "Transaction successful.\n";
+			write(sock,message, strlen(message));
+			break;
+
+		case "Balance":
+			if (!inSession){
+				message = "Must start an account first\n";
+				write(sock,message, strlen(message));
+				continue;
+			}
+			message = "Credit balance: ";
+			message = strcat(message, itoa(bank[index].credit));
+			message = strcat(message, "\nDebit balance: ");
+			message = strcat(message, itoa(bank[index.debit]));
+			write(sock,message, strlen(message));
+			break;
+
+			break;
+		case "Exit":
+			return;
+			//exit out of child process
+		default:
+			//Invalid input
+			message = "Invalid command. Try again."
+			write(sock,message, strlen(message));
+			break;
+		}
+
+	}
+
+
+
+	printf("Here is the message: %s\n",buffer);
+	printf("%d\n",getpid());
+	n = write(sock,"I got your message",18);
+
+	if (n < 0) {
+		perror("ERROR writing to socket");
+		exit(1);
+	}
+}
 
 int main(int argc, char **argv) {
 
