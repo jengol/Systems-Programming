@@ -4,7 +4,6 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 O_SRCS += \
-../client.o \
 ../server.o 
 
 C_SRCS += \

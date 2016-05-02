@@ -23,12 +23,13 @@
 #include <pthread.h>
 #include <netinet/in.h>
 #include <unistd.h>
-
-
-//Constroversial necessity
 #include <errno.h>
 #include <sys/shm.h>
 #include <sys/ipc.h>
+#include <signal.h>
+
+
+
 /*Hard-coded port number*/
 #define PORT 4000
 #define MAX_THREADS 20
@@ -36,7 +37,7 @@
 
 struct Account{
 	int index;
-	char * name;
+	char name[100];
 	float balance;
 	int inSession;
 };

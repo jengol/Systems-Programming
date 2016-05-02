@@ -125,6 +125,7 @@ int main(int argc, char *argv[])
 			exitStatus = 1;
 			break;
 
+		default:
 		}
 		bzero(buffer,100);
 		read(socketfd,buffer,100);
