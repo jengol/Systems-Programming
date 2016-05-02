@@ -10,6 +10,6 @@
 #include <string.h>
 #include <netdb.h>
 
-#define PORT 4000
+#define PORT 5001
 
 #endif /* CLIENT_H_ */

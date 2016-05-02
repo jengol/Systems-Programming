@@ -13,5 +13,5 @@ client.o: client.c
 	$(COMPILER) $(FLAGS) client.c
 	
 clean:
-	rm -rf *.o
+	rm -rf *.o server client
 		
