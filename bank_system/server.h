@@ -36,7 +36,6 @@
 
 
 struct Account{
-	int index;
 	char name[100];
 	float balance;
 	int inSession;

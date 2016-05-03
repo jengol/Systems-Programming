@@ -50,104 +50,45 @@ int main(int argc, char *argv[])
 		sleep(3);
 	}
 
-	puts("Connected to server: %s\n",argv[1]);
+	printf("Connected to server: %s\n",argv[1]);
 	/* Data read in from stdin */
-	char buffer[100];
+	char buffer[110];
 	/* User command */
 	char choice;
 	/* Condition to 'quit' program */
 	int exitStatus = 0;
-	int inSession = 0;
 
 	while(1){
 
 		printf("Please enter a command:\n");
-		printf("Open account\n");
+		printf("Open account (max 100 letters)\n");
 		printf("Start account\n");
 		printf("Credit\n");
 		printf("Debit\n");
 		printf("Balance\n");
-		printf("End\n");
-		printf("Quit\n");
-		printf("Note: account name up to 100 characters long\n");
+		printf("Finish\n");
+		printf("Exit\n");
+		printf("\n");
 
 
+		fgets(buffer,110,stdin);
 
 		//Read in choice
 		write(socketfd,buffer,strlen(buffer));
-
-		switch(choice){
-		case 'O':
-			if(inSession){
-				printf("Already in session.");
-				continue;
-			}
-			printf("Enter a new account name\n");
-			fgets(buffer);
-			write(socketfd,buffer,strlen(buffer));
-			bzero(buffer,100);
-			read(socketfd,buffer,100);
-			/* Server Response */
-			printf("%s\n",buffer);
-
-			break;
-		case 's':
-			if(inSession){
-				printf("Already in session.");
-				continue;
-			}
-			printf("Enter account name\n");
-			fgets(buffer);
-			write(socketfd,buffer,strlen(buffer));
-
-			break;
-		case 'c':
-			if(!inSession){
-				printf("Must start an account first");
-			}
-			printf("Enter amount to credit/deposit:\n");
-			fgets(buffer);
-			write(socketfd,buffer,strlen(buffer));
-			break;
-		case 'd':
-			if(!inSession){
-				printf("Must start an account first");
-				continue;
-			}
-			printf("Enter amount to debit/withdraw:\n");
-			fgets(buffer);
-			write(socketfd,buffer,strlen(buffer));
-			break;
-		case 'b':
-			break;
-		case 'e':
-			inSession = 0;
-			break;
-		case 'q':
+		if(strcmp("Exit",buffer)==0){
 			exitStatus = 1;
-			break;
-
 		}
-		bzero(buffer,100);
-		read(socketfd,buffer,100);
+		bzero(buffer,110);
+		read(socketfd,buffer,110);
 		/* Server Response */
 		printf("%s\n",buffer);
-		inSession = 1;
-
+		if(exitStatus){
+			break;
+		}
+		/* Sleep to prevent client from entering more than one command in a two second interval */
+		sleep(2);
 	}
-
-	bzero(buffer,100);
-	read(socketfd,buffer,255);
-	printf("%s\n",buffer);
-
-	if(exitStatus == 1){
-		break;
-	}
-	/* Sleep to prevent client from entering more than one command in a two second interval */
-	sleep(2);
-
-
-return 0;
+	return 0;
 }
 
 
